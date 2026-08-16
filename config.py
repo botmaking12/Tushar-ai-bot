@@ -1,127 +1,157 @@
 # ============================================================
 # 🔱 BABADEV AI — CONFIGURATION
 # ============================================================
-# Central configuration for the complete AI Telegram Bot.
-# ============================================================
 
 import os
 from pathlib import Path
-from dotenv import load_dotenv
 
-# Load environment variables from .env
-load_dotenv()
+
+# ============================================================
+# 📂 BASE DIRECTORY
+# ============================================================
+
+BASE_DIR = Path(__file__).resolve().parent
 
 
 # ============================================================
 # 🤖 TELEGRAM BOT
 # ============================================================
 
-BOT_TOKEN = os.getenv("BOT_TOKEN", "").strip()
-
-# Example:
-# ADMIN_IDS=123456789,987654321
-
-ADMIN_IDS = {
-    int(user_id.strip())
-    for user_id in os.getenv("ADMIN_IDS", "").split(",")
-    if user_id.strip().isdigit()
-}
+BOT_TOKEN = os.getenv(
+    "BOT_TOKEN",
+    ""
+)
 
 
 # ============================================================
 # 🧠 GOOGLE GEMINI AI
 # ============================================================
 
-GEMINI_API_KEY = os.getenv(
-    "GEMINI_API_KEY",
+GOOGLE_API_KEY = os.getenv(
+    "GOOGLE_API_KEY",
     ""
-).strip()
+)
 
 GEMINI_MODEL = os.getenv(
     "GEMINI_MODEL",
     "gemini-2.5-flash"
-).strip()
-
-GEMINI_VISION_MODEL = os.getenv(
-    "GEMINI_VISION_MODEL",
-    "gemini-2.5-flash"
-).strip()
-
-GEMINI_TTS_MODEL = os.getenv(
-    "GEMINI_TTS_MODEL",
-    "gemini-2.5-flash-preview-tts"
-).strip()
-
-
-# ============================================================
-# 🌐 LIVE WEB SEARCH
-# ============================================================
-
-WEB_SEARCH_ENABLED = (
-    os.getenv(
-        "WEB_SEARCH_ENABLED",
-        "true"
-    ).lower()
-    in ("1", "true", "yes", "on")
 )
 
 
 # ============================================================
-# 🔱 BABADEV AI BRANDING
+# 👑 ADMIN
+# ============================================================
+
+def get_admin_ids():
+    raw = os.getenv(
+        "ADMIN_IDS",
+        ""
+    )
+
+    if not raw.strip():
+        return set()
+
+    result = set()
+
+    for value in raw.split(","):
+
+        value = value.strip()
+
+        if value.isdigit():
+            result.add(int(value))
+
+    return result
+
+
+ADMIN_IDS = get_admin_ids()
+
+
+# ============================================================
+# 🔱 BRANDING
 # ============================================================
 
 BOT_NAME = os.getenv(
     "BOT_NAME",
-    "BABADEV AI"
-).strip()
+    "𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈"
+)
 
-BOT_SHORT_NAME = os.getenv(
-    "BOT_SHORT_NAME",
-    "BABADEV"
-).strip()
+BOT_USERNAME = os.getenv(
+    "BOT_USERNAME",
+    ""
+)
 
 CREATOR_NAME = os.getenv(
     "CREATOR_NAME",
-    "Tushar"
-).strip()
-
-
-# Premium footer
-BRAND_FOOTER = (
-    "╭━━━ 🔱 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈 ━━━╮\n"
-    f"┃ ✨ Powered by {BOT_NAME}\n"
-    f"┃ 👑 Created by {CREATOR_NAME}\n"
-    "╰━━━━━━━━━━━━━━━━━━━━━━╯"
+    "TUSHAR RATHVA"
 )
 
+CREATOR_USERNAME = os.getenv(
+    "CREATOR_USERNAME",
+    "@tushueditz"
+)
 
-# Short watermark
-BRAND_WATERMARK = (
-    f"🔱 {BOT_NAME} • 👑 {CREATOR_NAME}"
+BRAND_STYLE = (
+    "🔱 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈\n"
+    "✨ Powered by Gemini AI\n"
+    f"👨‍💻 Created by {CREATOR_NAME}\n"
+    f"📸 {CREATOR_USERNAME}"
 )
 
 
 # ============================================================
-# 🌍 SUPPORTED LANGUAGES
+# 🖼️ BOT IMAGES
+# ============================================================
+
+START_IMAGE = os.getenv(
+    "START_IMAGE",
+    ""
+)
+
+AI_HOME_IMAGE = os.getenv(
+    "AI_HOME_IMAGE",
+    ""
+)
+
+PDF_IMAGE = os.getenv(
+    "PDF_IMAGE",
+    ""
+)
+
+OCR_IMAGE = os.getenv(
+    "OCR_IMAGE",
+    ""
+)
+
+VOICE_IMAGE = os.getenv(
+    "VOICE_IMAGE",
+    ""
+)
+
+QUIZ_IMAGE = os.getenv(
+    "QUIZ_IMAGE",
+    ""
+)
+
+
+# ============================================================
+# 🌍 LANGUAGES
 # ============================================================
 
 SUPPORTED_LANGUAGES = {
     "hi": "🇮🇳 हिन्दी",
-    "gu": "🪔 ગુજરાતી",
+    "gu": "🪷 ગુજરાતી",
     "en": "🇬🇧 English",
 }
+
 
 DEFAULT_LANGUAGE = os.getenv(
     "DEFAULT_LANGUAGE",
     "hi"
-).strip().lower()
-
-if DEFAULT_LANGUAGE not in SUPPORTED_LANGUAGES:
-    DEFAULT_LANGUAGE = "hi"
+)
 
 
 # ============================================================
-# 🔐 FREE USER LIMITS
+# 🔐 DAILY LIMITS
 # ============================================================
 
 FREE_DAILY_LIMIT = int(
@@ -131,46 +161,6 @@ FREE_DAILY_LIMIT = int(
     )
 )
 
-FREE_PDF_LIMIT = int(
-    os.getenv(
-        "FREE_PDF_LIMIT",
-        "3"
-    )
-)
-
-FREE_OCR_LIMIT = int(
-    os.getenv(
-        "FREE_OCR_LIMIT",
-        "10"
-    )
-)
-
-FREE_VOICE_LIMIT = int(
-    os.getenv(
-        "FREE_VOICE_LIMIT",
-        "10"
-    )
-)
-
-FREE_WEB_SEARCH_LIMIT = int(
-    os.getenv(
-        "FREE_WEB_SEARCH_LIMIT",
-        "10"
-    )
-)
-
-FREE_QUIZ_LIMIT = int(
-    os.getenv(
-        "FREE_QUIZ_LIMIT",
-        "5"
-    )
-)
-
-
-# ============================================================
-# 👑 PREMIUM USER LIMITS
-# ============================================================
-
 PREMIUM_DAILY_LIMIT = int(
     os.getenv(
         "PREMIUM_DAILY_LIMIT",
@@ -178,44 +168,9 @@ PREMIUM_DAILY_LIMIT = int(
     )
 )
 
-PREMIUM_PDF_LIMIT = int(
-    os.getenv(
-        "PREMIUM_PDF_LIMIT",
-        "50"
-    )
-)
-
-PREMIUM_OCR_LIMIT = int(
-    os.getenv(
-        "PREMIUM_OCR_LIMIT",
-        "100"
-    )
-)
-
-PREMIUM_VOICE_LIMIT = int(
-    os.getenv(
-        "PREMIUM_VOICE_LIMIT",
-        "100"
-    )
-)
-
-PREMIUM_WEB_SEARCH_LIMIT = int(
-    os.getenv(
-        "PREMIUM_WEB_SEARCH_LIMIT",
-        "100"
-    )
-)
-
-PREMIUM_QUIZ_LIMIT = int(
-    os.getenv(
-        "PREMIUM_QUIZ_LIMIT",
-        "50"
-    )
-)
-
 
 # ============================================================
-# 👑 PREMIUM SYSTEM
+# 👑 PREMIUM
 # ============================================================
 
 PREMIUM_ENABLED = (
@@ -223,64 +178,99 @@ PREMIUM_ENABLED = (
         "PREMIUM_ENABLED",
         "true"
     ).lower()
-    in ("1", "true", "yes", "on")
+    == "true"
+)
+
+
+PREMIUM_PRICE = int(
+    os.getenv(
+        "PREMIUM_PRICE",
+        "99"
+    )
+)
+
+
+PREMIUM_DAYS = int(
+    os.getenv(
+        "PREMIUM_DAYS",
+        "30"
+    )
 )
 
 
 # ============================================================
-# 💳 UPI / PAYMENT
+# 💳 UPI
 # ============================================================
 
 UPI_ID = os.getenv(
     "UPI_ID",
     ""
-).strip()
-
-PREMIUM_MONTHLY_PRICE = int(
-    os.getenv(
-        "PREMIUM_MONTHLY_PRICE",
-        "99"
-    )
 )
 
-PREMIUM_YEARLY_PRICE = int(
-    os.getenv(
-        "PREMIUM_YEARLY_PRICE",
-        "799"
-    )
+UPI_NAME = os.getenv(
+    "UPI_NAME",
+    CREATOR_NAME
 )
 
 
 # ============================================================
-# 🗄️ DATABASE
+# 📊 USER FEATURES
 # ============================================================
 
-DATABASE_PATH = os.getenv(
-    "DATABASE_PATH",
-    "babadev_ai.db"
-).strip()
+ENABLE_STATISTICS = True
+
+ENABLE_FAVORITES = True
+
+ENABLE_CHAT_FOLDERS = True
+
+ENABLE_STUDY_MODE = True
+
+ENABLE_QUIZ = True
+
+ENABLE_PDF = True
+
+ENABLE_OCR = True
+
+ENABLE_VOICE = True
+
+ENABLE_TTS = True
+
+ENABLE_WEB_SEARCH = True
 
 
 # ============================================================
-# 📁 STORAGE DIRECTORIES
+# 📁 STORAGE
 # ============================================================
 
-DATA_DIR = Path(
-    os.getenv(
-        "DATA_DIR",
-        "data"
-    )
-)
+DATA_DIR = BASE_DIR / "data"
 
 UPLOAD_DIR = DATA_DIR / "uploads"
-PDF_DIR = DATA_DIR / "pdf"
-VOICE_DIR = DATA_DIR / "voice"
-TTS_DIR = DATA_DIR / "tts"
+
 TEMP_DIR = DATA_DIR / "temp"
+
+PDF_DIR = DATA_DIR / "pdf"
+
+AUDIO_DIR = DATA_DIR / "audio"
+
+IMAGE_DIR = DATA_DIR / "images"
+
+
+for directory in (
+    DATA_DIR,
+    UPLOAD_DIR,
+    TEMP_DIR,
+    PDF_DIR,
+    AUDIO_DIR,
+    IMAGE_DIR,
+):
+    directory.mkdir(
+        parents=True,
+        exist_ok=True
+    )
 
 
 # ============================================================
-# 📄 FILE SETTINGS
+# 📄 FILE LIMITS
 # ============================================================
 
 MAX_FILE_SIZE_MB = int(
@@ -290,149 +280,154 @@ MAX_FILE_SIZE_MB = int(
     )
 )
 
-MAX_PDF_PAGES = int(
+MAX_TEXT_LENGTH = int(
     os.getenv(
-        "MAX_PDF_PAGES",
-        "100"
+        "MAX_TEXT_LENGTH",
+        "50000"
     )
 )
 
 
 # ============================================================
-# 🧠 AI CHAT SETTINGS
+# 🛡️ SECURITY
 # ============================================================
 
-MAX_HISTORY_MESSAGES = int(
-    os.getenv(
-        "MAX_HISTORY_MESSAGES",
-        "30"
+SECRET_KEY = os.getenv(
+    "SECRET_KEY",
+    ""
+)
+
+
+# ============================================================
+# 🎨 UI BRAND COLORS / STYLE NAMES
+# ============================================================
+
+EMOJIS = {
+    "home": "🏠",
+    "ai": "🤖",
+    "pdf": "📄",
+    "mcq": "📑",
+    "ocr": "🖼️",
+    "voice": "🎤",
+    "tts": "🔊",
+    "web": "🌐",
+    "study": "🧑‍🎓",
+    "quiz": "📝",
+    "admin": "📊",
+    "premium": "👑",
+    "stats": "📈",
+    "favorite": "⭐",
+    "folder": "🗂️",
+    "limit": "🔐",
+    "language": "🌍",
+    "settings": "⚙️",
+    "back": "⬅️",
+    "close": "❌",
+    "success": "✅",
+    "error": "❌",
+    "loading": "⏳",
+}
+
+
+# ============================================================
+# 📝 FOOTER / WATERMARK
+# ============================================================
+
+def brand_footer():
+    return (
+        "\n\n"
+        "━━━━━━━━━━━━━━━━━━\n"
+        "🔱 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈\n"
+        f"👨‍💻 𝐂𝐫𝐞𝐚𝐭𝐞𝐝 𝐛𝐲 {CREATOR_NAME}\n"
+        f"📸 {CREATOR_USERNAME}\n"
+        "━━━━━━━━━━━━━━━━━━"
     )
-)
 
 
 # ============================================================
-# ⏱️ NETWORK SETTINGS
+# 🏠 HOME TEXT
 # ============================================================
 
-REQUEST_TIMEOUT = int(
-    os.getenv(
-        "REQUEST_TIMEOUT",
-        "120"
+def home_text():
+    return (
+        "╭━━━━━━━━━━━━━━━━━━╮\n"
+        "     🔱 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈\n"
+        "╰━━━━━━━━━━━━━━━━━━╯\n\n"
+
+        "🤖 Your Smart AI Assistant\n"
+        "✨ Study • Create • Search • Learn\n\n"
+
+        "📄 PDF → Summary\n"
+        "📑 PDF → MCQ\n"
+        "🖼️ Image → Text\n"
+        "🎤 Voice → Text\n"
+        "🔊 Text → Voice\n"
+        "🌐 Live Web Search\n"
+        "🧑‍🎓 Personal Study Mode\n"
+        "📝 Quiz Generator\n\n"
+
+        "━━━━━━━━━━━━━━━━━━\n"
+        f"👨‍💻 𝐂𝐫𝐞𝐚𝐭𝐞𝐝 𝐛𝐲 {CREATOR_NAME}\n"
+        f"📸 {CREATOR_USERNAME}\n"
+        "━━━━━━━━━━━━━━━━━━"
     )
-)
 
 
 # ============================================================
-# 🛡️ BOT SECURITY
+# 🔧 CONFIG CHECK
 # ============================================================
 
-ALLOW_GROUPS = (
-    os.getenv(
-        "ALLOW_GROUPS",
-        "false"
-    ).lower()
-    in ("1", "true", "yes", "on")
-)
+def config_status():
 
-DELETE_TEMP_FILES = (
-    os.getenv(
-        "DELETE_TEMP_FILES",
-        "true"
-    ).lower()
-    in ("1", "true", "yes", "on")
-)
-
-
-# ============================================================
-# 🧪 DEBUG MODE
-# ============================================================
-
-DEBUG = (
-    os.getenv(
-        "DEBUG",
-        "false"
-    ).lower()
-    in ("1", "true", "yes", "on")
-)
-
-
-# ============================================================
-# 🔐 ADMIN CHECK
-# ============================================================
-
-def is_admin(user_id: int) -> bool:
-    """Return True when the Telegram user is an admin."""
-
-    return user_id in ADMIN_IDS
-
-
-# ============================================================
-# ⚙️ CONFIG VALIDATION
-# ============================================================
-
-def validate_config():
-    """
-    Validate required configuration.
-
-    Returns:
-        list[str]: Configuration errors.
-    """
-
-    errors = []
+    missing = []
 
     if not BOT_TOKEN:
-        errors.append(
-            "❌ BOT_TOKEN is missing"
+        missing.append(
+            "BOT_TOKEN"
         )
 
-    if not GEMINI_API_KEY:
-        errors.append(
-            "❌ GEMINI_API_KEY is missing"
+    if not GOOGLE_API_KEY:
+        missing.append(
+            "GOOGLE_API_KEY"
         )
 
-    if not ADMIN_IDS:
-        errors.append(
-            "❌ ADMIN_IDS is missing"
-        )
-
-    return errors
+    return {
+        "ready": len(missing) == 0,
+        "missing": missing,
+    }
 
 
 # ============================================================
-# 📊 SAFE CONFIG SUMMARY
+# 🚀 STARTUP INFORMATION
 # ============================================================
 
-def config_summary() -> str:
-    """
-    Return a safe configuration summary.
+def startup_info():
 
-    Secrets such as BOT_TOKEN and GEMINI_API_KEY
-    are never displayed.
-    """
+    status = config_status()
 
-    premium_status = (
-        "🟢 ENABLED"
-        if PREMIUM_ENABLED
-        else "🔴 DISABLED"
-    )
+    if status["ready"]:
 
-    search_status = (
-        "🟢 ENABLED"
-        if WEB_SEARCH_ENABLED
-        else "🔴 DISABLED"
-    )
+        return (
+            "╭━━━━━━━━━━━━━━━━━━╮\n"
+            "   🔱 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈\n"
+            "╰━━━━━━━━━━━━━━━━━━╯\n\n"
+            "🟢 AI Engine: READY\n"
+            "🧠 Gemini: CONNECTED\n"
+            "🌍 Languages: HI / GU / EN\n"
+            "📄 PDF: ENABLED\n"
+            "🖼️ OCR: ENABLED\n"
+            "🎤 Voice: ENABLED\n"
+            "📝 Quiz: ENABLED\n"
+            "━━━━━━━━━━━━━━━━━━\n"
+            f"👨‍💻 {CREATOR_NAME}"
+        )
 
     return (
-        "╭━━━ ✨ 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈 ✨ ━━━╮\n"
-        f"┃ 🤖 Bot       : {BOT_NAME}\n"
-        f"┃ 🧠 AI Model  : {GEMINI_MODEL}\n"
-        f"┃ 🌍 Languages : "
-        f"{len(SUPPORTED_LANGUAGES)}\n"
-        f"┃ 👑 Premium   : {premium_status}\n"
-        f"┃ 🌐 Web Search: {search_status}\n"
-        f"┃ 🔐 Free Limit: "
-        f"{FREE_DAILY_LIMIT}/day\n"
-        "╰━━━━━━━━━━━━━━━━━━━━━━╯\n\n"
-        f"🔱 {BOT_NAME}\n"
-        f"👑 Created by {CREATOR_NAME}"
+        "⚠️ 𝐁𝐀𝐁𝐀𝐃𝐄𝐕 𝐀𝐈\n\n"
+        "🔴 Configuration incomplete.\n\n"
+        "Missing:\n"
+        + "\n".join(
+            f"❌ {item}"
+            for item in status["missing"]
+        )
 )
